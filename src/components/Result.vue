@@ -1,6 +1,6 @@
 <template>
   <div id="result-container">
-    <section>
+    <section >
       <div id="videos-card">
         <h3>Videos</h3>
           <div id="videos-roll" class="videos-roll">
@@ -10,18 +10,19 @@
               id="video-result"
             >
               <div>
-                <div id="video-thumb"></div>
+                <div id="video-thumb">
+                 <a :href="`https://www.youtube.com/watch?v=${videos.id.videoId}`" target="_blank"><img width="200" height="100" :src="videos.snippet.thumbnails.medium.url"></a> 
+                </div>
               </div>
               <div id="video-result-data">
                 <h4 v-html="videos.snippet.title" id="video-title"></h4>
                 <div id="video-infos">
-                  <small id="video-views">910 mi</small>
-                  <small id="video-date">há 11 anos</small>
+                  <a id="video-channel" :href="`https://www.youtube.com/channel/${videos.snippet.channelId}`" target="_blank">
+                    {{videos.snippet.channelTitle}}
+                  </a>
                 </div>
                 <small id="video-description">
-                  Directed by Adam Dubin Filmed during the recording of The
-                  Black Album in Spring 1991 in North Hollywood, CA Video
-                  Premiere ...
+                  {{ videos.snippet.description }}
                 </small>
               </div>
             </div>
@@ -38,26 +39,21 @@
               <div id="event-result-data">
                 <div>
                   <i>Local</i>
-                  <h4 id="event-local">{{ events.name }}</h4>
-                  <h5 id="event-country">Canada</h5>
+                  <h4 id="event-name">{{ events.name }}</h4>
                 </div>
                 <div>
-                  <i>Date</i>
-                  <p>
-                    <span id="event-date">06/04/2021</span>
+                  <i>Info</i>
+                  <p>                    
+                    <a :href="events.url" target="_blank" id="event-link">More...</a>
                   </p>
-                </div>
-                <div>
-                  <i>Sales</i>
-                  <p class="sales">
-                    <span id="event-salestart">04/03/2021</span>
-                    <span class="mx-1">to</span>
-                    <span id="event-salefinal">06/04/2021</span>
-                  </p>
-                </div>
+                </div>                
               </div>
               <div>
-                <div id="event-thumb"></div>
+                <div id="event-thumb">
+                  <a :href="events.url" target="_blank" >
+                    <img width="200" height="100" :src="events.images[0].url">
+                  </a>
+                </div>
               </div>
             </div>
           </div>        
@@ -83,9 +79,13 @@ export default {
 </script>
 
 <style scoped>
+
+/* css destinado a todas a resoluções, scooped */
+/*  */
 #result-container {
   margin-top: 20px;
 }
+
 #videos-card,
 #events-card {
   background-color: white;
@@ -113,9 +113,6 @@ h3 {
   display: flex;
 }
 #video-thumb {
-  width: 200px;
-  height: 100px;
-  background-color: black;
   margin-right: 10px;
 }
 #video-result-data {
@@ -137,14 +134,19 @@ h3 {
   -webkit-line-clamp: 3;
 }
 
+#event-link, #video-channel {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--red);
+  text-decoration: none;
+}
+
 #event-result {
   display: flex;
   justify-content: space-between;
+  align-content: space-between;
 }
 #event-thumb {
-  width: 200px;
-  height: 100px;
-  background-color: black;
   margin-left: 10px;
 }
 #event-result-data {
@@ -158,32 +160,16 @@ h3 {
 #event-result-data h4 {
   color: var(--black);
 }
-#event-result-data h5 {
-  color: var(--grey);
-}
-#event-result-data span {
-  font-size: 16px;
-  color: var(--black);
-  font-weight: 600;
-}
-#event-salestart {
-  color: green !important;
-}
-#event-salefinal {
-  color: red !important;
-}
 
-#event-local,
-#event-country,
-#event-date,
+#event-name,
+#event-link,
 #event-result-data p {
   margin: 0;
 }
 
-#event-result-data small {
-  margin: 5px 0;
-}
 
+/* Estilização da scroolbar */
+/*  */
 #videos-card::-webkit-scrollbar,
 #events-card::-webkit-scrollbar {
   width: 10px;
@@ -204,6 +190,9 @@ h3 {
   background: rgba(78, 78, 80, 0.5);
 }
 
+
+/* Resolução a partir de tablets pequenos */
+/*  */
 @media (min-width: 992px) {
   #result-container {
     width: 80%;
@@ -228,18 +217,19 @@ h3 {
   }
   #event-result-data div:last-child {
     margin-bottom: 0px;
-  }
-  .sales {
-    display: grid;
-  }
+  }  
 }
 
+/* Resolução entre Mobile e tablets pequenos */
+/*  */
 @media (min-width: 768px) and (max-width: 992px) {
   #result-container {
     width: 90%;
   }
 }
 
+/* Resolução até tablets pequenos */
+/*  */
 @media (max-width: 992px) {
   section {
     flex-direction: column;
@@ -254,9 +244,14 @@ h3 {
     display: flex;
     overflow-y: auto;
   }
-  #event-result,
-  #video-result {
+  #event-result {
     display: grid;
+    border-right: 1px solid var(--black);
+    margin: 0px;
+    padding: 0 10px;
+  }
+  #video-result {
+    display: block;
     border-right: 1px solid var(--black);
     margin: 0px;
     padding: 0 10px;
@@ -293,13 +288,30 @@ h3 {
     -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
     background: rgba(78, 78, 80, 0.5);
   }
+
+  #video-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    box-orient: vertical;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    line-clamp: 2;
+    -webkit-line-clamp: 2;
+  }
 }
+
+/* Resolução para ssMobile e Mobile */
+/*  */
 
 @media (min-width: 576px) and (max-width: 768px) {
   #result-container {
     width: 90%;
   }
 }
+
+/* Resolução para ssMobile*/
+/*  */
+
 
 @media (max-width: 576px) {
   #result-container {

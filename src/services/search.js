@@ -1,12 +1,14 @@
 import axios from 'axios';
 
+// parametros e chaves das apis
+// 
 export const YOUTUBE = axios.create({
     baseURL: 'https://www.googleapis.com/youtube/v3',
     params: {
         part: 'snippet',
         type: 'video',
         maxResults: 5,
-        key: 'AIzaSyDnFbiU5T90vkb0Bl633G9IUIdTJ16sA3E',
+        key: 'AIzaSyD9Llqh3kZKnzZpNAt0UhTOWPHUQaHO_MQ',
         q: ''
     },
 });
@@ -15,6 +17,6 @@ export const TICKETMASTER = axios.create({
     params: {
         apikey: 'b8bgOphhDQurAPBX8jGoCASBBUsggg7H',
         keyword: 'teste',
-        size: '10'
+        size: '5'
     },
 });

@@ -2,7 +2,7 @@
   <div id="app">
     <Logo />
     <Search @onSearchRequested="search" />
-    <Result :videos='videos' :events='events'/>   
+    <Result :videos="videos" :events="events" />
   </div>
 </template>
 
@@ -19,45 +19,45 @@ export default {
     Search,
     Result,
   },
-  data () {
+  data() {
     return {
       videos: [],
       events: [],
-    }
+    };
   },
 
   mounted() {
-    this.search('')
+    this.search("");
   },
 
   methods: {
     search(queryString) {
-      if (queryString.length == 0)
-        {
-          this.events = [];
-          this.videos = [];
-        }
-      else {
-          YOUTUBE.get('/search', {
-            params: {
-              q: queryString,
-            },
-          }).then(response => {
-            console.log('YOUTUBE', response);
-            this.videos = response.data.items;
-          });          
+      //verificação para evitar consulta vazia
+      //
+      if (queryString.length == 0) {
+        this.events = [];
+        this.videos = [];
+      } else {
+        YOUTUBE.get("/search", {
+          params: {
+            q: queryString,
+          },
+        }).then((response) => {
+          console.log("YOUTUBE", response);
+          this.videos = response.data.items;
+        });
 
-          TICKETMASTER.get('/attractions', {
-            params: {
-              keyword: queryString,
-            },
-          }).then(response => {
-            console.log('TICKETMASTER', response);
-            this.events = response.data._embedded.attractions;
-          });          
-      }      
-    }
-  }
+        TICKETMASTER.get("/attractions", {
+          params: {
+            keyword: queryString,
+          },
+        }).then((response) => {
+          console.log("TICKETMASTER", response);
+          this.events = response.data._embedded.attractions;
+        });
+      }
+    },
+  },
 };
 </script>
 

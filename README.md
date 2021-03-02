@@ -31,14 +31,9 @@ npm install
 npm run serve
 ```
 
-### Compiles and minifies for production
+### Acess
 ```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
+http://localhost:8080/
 ```
 
 ### Customize configuration

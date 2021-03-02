@@ -1,6 +1,7 @@
 <template>
   <div id="result-container">
     <section>
+       {{ videos }}
       <div id="videos-card">
         <h3>Videos</h3>
         <div id="videos-roll" class="videos-roll">
@@ -122,9 +123,23 @@
 </template>
 
 <script>
+// import {YOUTUBE, TICKETMASTER} from '../services/search'
+
 export default {
   name: "Result",
-  props: {},
+  props: {
+    videos: Array
+  },
+
+  data() {
+    return {
+     
+    }
+  },
+  methods: {
+    
+  }
+
 };
 </script>
 

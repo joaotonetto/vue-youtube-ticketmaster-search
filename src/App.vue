@@ -1,23 +1,41 @@
 <template>
   <div id="app">
-        <Logo/>
-        <Search/>  
-        <Result/>
+    <Logo />
+    <Search />
+    <Result :videos = 'videos'/>   
   </div>
 </template>
 
 <script>
-import Logo from './components/Logo.vue'
-import Search from './components/Search.vue'
-import Result from './components/Result.vue'
+import Logo from "./components/Logo.vue";
+import Search from "./components/Search.vue";
+import Result from "./components/Result.vue";
+import { YOUTUBE } from "./services/search";
+
 export default {
-  name: 'App',
+  name: "App",
   components: {
     Logo,
     Search,
-    Result
+    Result,
   },
-}
+  data () {
+    return {
+      videos: []
+    }
+  },
+
+  mounted() {
+    YOUTUBE.get('',{
+      params: {
+        term: "metallica",
+      },
+    }).then(response => {
+      console.log(response);
+      this.videos = response.data.items;
+    });
+  },
+};
 </script>
 
 <style>
@@ -32,11 +50,11 @@ export default {
   align-items: center;
 }
 :root {
-      --black: #1A1A1C;
-      --grey: #4E4E50;
-      --darkred: #950741;
-      --red: #E1054E;
-    }
+  --black: #1a1a1c;
+  --grey: #4e4e50;
+  --darkred: #950741;
+  --red: #e1054e;
+}
 
 html {
   background-color: var(--black);

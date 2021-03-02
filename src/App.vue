@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <Logo />
-    <Search />
-    <Result :videos = 'videos' :events = 'events'/>   
+    <Search @onSearchRequested="search" />
+    <Result :videos='videos' :events='events'/>   
   </div>
 </template>
 
@@ -22,28 +22,42 @@ export default {
   data () {
     return {
       videos: [],
-      events: []
+      events: [],
     }
   },
 
   mounted() {
-    YOUTUBE.get('',{
-      params: {
-        q: 'matheus gamer',
-      },
-    }).then(response => {
-      console.log(response);
-      this.videos = response.data.items;
-    });
-    TICKETMASTER.get('',{
-      params: {
-        data: 'metallica',
-      },
-    }).then(response => {
-      console.log(response);
-      this.events = response.data._embedded.attractions;
-    })
+    this.search('')
   },
+
+  methods: {
+    search(queryString) {
+      if (queryString.length == 0)
+        {
+          this.events = [];
+          this.videos = [];
+        }
+      else {
+          YOUTUBE.get('/search', {
+            params: {
+              q: queryString,
+            },
+          }).then(response => {
+            console.log('YOUTUBE', response);
+            this.videos = response.data.items;
+          });          
+
+          TICKETMASTER.get('/attractions', {
+            params: {
+              keyword: queryString,
+            },
+          }).then(response => {
+            console.log('TICKETMASTER', response);
+            this.events = response.data._embedded.attractions;
+          });          
+      }      
+    }
+  }
 };
 </script>
 

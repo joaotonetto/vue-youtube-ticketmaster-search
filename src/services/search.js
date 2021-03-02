@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const YOUTUBE = axios.create({
-    baseURL: 'https://www.googleapis.com/youtube/v3/search',
+    baseURL: 'https://www.googleapis.com/youtube/v3',
     params: {
         part: 'snippet',
         type: 'video',
@@ -11,10 +11,10 @@ export const YOUTUBE = axios.create({
     },
 });
 export const TICKETMASTER = axios.create({
-    baseURL: ' https://app.ticketmaster.com/discovery/v2/attractions',
+    baseURL: ' https://app.ticketmaster.com/discovery/v2',
     params: {
         apikey: 'b8bgOphhDQurAPBX8jGoCASBBUsggg7H',
-        keyword: 'metallica',
-        size: '10',
+        keyword: 'teste',
+        size: '10'
     },
 });

@@ -1,23 +1,36 @@
 <template>
   <div>
-    <form>
+    <form @submit.prevent="searchBtn">
       <div class="search-bar">
         <input
           type="search"
           id="band-search"
           placeholder="Sua banda..."
           autosave
+          v-model="searchQuery"
         />
         <button class="search-btn" type="subtmit">Search</button>
       </div>
     </form>
   </div>
 </template>
-
 <script>
 export default {
   name: "Search",
   props: {},
+
+  data() {
+    return {
+      searchQuery: ''
+    };
+  },
+
+  methods: {
+    searchBtn() {
+      this.$emit('onSearchRequested', this.searchQuery);
+    }
+  }
+
 };
 </script>
 

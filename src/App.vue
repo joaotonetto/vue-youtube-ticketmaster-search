@@ -2,7 +2,7 @@
   <div id="app">
     <Logo />
     <Search />
-    <Result :videos = 'videos'/>   
+    <Result :videos = 'videos' :events = 'events'/>   
   </div>
 </template>
 
@@ -10,7 +10,7 @@
 import Logo from "./components/Logo.vue";
 import Search from "./components/Search.vue";
 import Result from "./components/Result.vue";
-import { YOUTUBE } from "./services/search";
+import { TICKETMASTER, YOUTUBE } from "./services/search";
 
 export default {
   name: "App",
@@ -21,19 +21,28 @@ export default {
   },
   data () {
     return {
-      videos: []
+      videos: [],
+      events: []
     }
   },
 
   mounted() {
     YOUTUBE.get('',{
       params: {
-        term: "metallica",
+        q: 'matheus gamer',
       },
     }).then(response => {
       console.log(response);
       this.videos = response.data.items;
     });
+    TICKETMASTER.get('',{
+      params: {
+        data: 'metallica',
+      },
+    }).then(response => {
+      console.log(response);
+      this.events = response.data._embedded.attractions;
+    })
   },
 };
 </script>

@@ -1,54 +1,15 @@
 <template>
   <div id="result-container">
     <section>
-       {{ videos }}
       <div id="videos-card">
         <h3>Videos</h3>
         <div id="videos-roll" class="videos-roll">
-          <div id="video-result">
+          <div v-for="(videos, index) in videos" :key="videos[index]" id="video-result">
             <div>
               <div id="video-thumb"></div>
             </div>
             <div id="video-result-data">
-              <h4 id="video-title">
-                Metallica: Nothing Else Matters (Official Music Video)
-              </h4>
-              <div id="video-infos">
-                <small id="video-views">910 mi</small>
-                <small id="video-date">há 11 anos</small>
-              </div>
-              <small id="video-description">
-                Directed by Adam Dubin Filmed during the recording of The Black
-                Album in Spring 1991 in North Hollywood, CA Video Premiere ...
-              </small>
-            </div>
-          </div>
-          <div id="video-result">
-            <div>
-              <div id="video-thumb"></div>
-            </div>
-            <div id="video-result-data">
-              <h4 id="video-title">
-                Metallica: Nothing Else Matters (Official Music Video)
-              </h4>
-              <div id="video-infos">
-                <small id="video-views">910 mi</small>
-                <small id="video-date">há 11 anos</small>
-              </div>
-              <small id="video-description">
-                Directed by Adam Dubin Filmed during the recording of The Black
-                Album in Spring 1991 in North Hollywood, CA Video Premiere ...
-              </small>
-            </div>
-          </div>
-          <div id="video-result">
-            <div>
-              <div id="video-thumb"></div>
-            </div>
-            <div id="video-result-data">
-              <h4 id="video-title">
-                Metallica: Nothing Else Matters (Official Music Video)
-              </h4>
+              <h4 v-html="videos.snippet.title" id="video-title"></h4>
               <div id="video-infos">
                 <small id="video-views">910 mi</small>
                 <small id="video-date">há 11 anos</small>
@@ -64,11 +25,11 @@
       <div id="events-card">
         <h3>Events</h3>
         <div id="events-roll" class="events-roll">
-          <div id="event-result">
+          <div v-for="(events, index) in events" :key="events[index]" id="event-result">
             <div id="event-result-data">
               <div>
                 <i>Local</i>
-                <h4 id="event-local">The Rockpile West adsadsadsa</h4>
+                <h4 id="event-local">{{ events.name }} </h4>
                 <h5 id="event-country">Canada</h5>
               </div>
               <div>
@@ -89,33 +50,7 @@
             <div>
               <div id="event-thumb"></div>
             </div>
-          </div>
-          <div id="event-result">
-            <div id="event-result-data">
-              <div>
-                <i>Local</i>
-                <h4 id="event-local">The Rockpile West adsadsadsa</h4>
-                <h5 id="event-country">Canada</h5>
-              </div>
-              <div>
-                <i>Date</i>
-                <p>
-                  <span id="event-date">06/04/2021</span>
-                </p>
-              </div>
-              <div>
-                <i>Sales</i>
-                <p class="sales">
-                  <span id="event-salestart">04/03/2021</span>
-                  <span class="mx-1">to</span>
-                  <span id="event-salefinal">06/04/2021</span>
-                </p>
-              </div>
-            </div>
-            <div>
-              <div id="event-thumb"></div>
-            </div>
-          </div>
+          </div>          
         </div>
       </div>
     </section>
@@ -128,12 +63,13 @@
 export default {
   name: "Result",
   props: {
-    videos: Array
+    videos: Array,
+    events: Array
   },
 
   data() {
     return {
-     
+      
     }
   },
   methods: {

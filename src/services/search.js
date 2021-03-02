@@ -7,12 +7,14 @@ export const YOUTUBE = axios.create({
         type: 'video',
         maxResults: 5,
         key: 'AIzaSyDnFbiU5T90vkb0Bl633G9IUIdTJ16sA3E',
-        term: ''
+        q: ''
     },
 });
 export const TICKETMASTER = axios.create({
-    baseURL: ' https://app.ticketmaster.com/discovery/v2/',
+    baseURL: ' https://app.ticketmaster.com/discovery/v2/attractions',
     params: {
         apikey: 'b8bgOphhDQurAPBX8jGoCASBBUsggg7H',
+        keyword: 'metallica',
+        size: '10',
     },
 });

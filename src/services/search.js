@@ -7,7 +7,7 @@ export const YOUTUBE = axios.create({
     params: {
         part: 'snippet',
         type: 'video',
-        maxResults: 5,
+        maxResults: 6,
         key: 'AIzaSyD9Llqh3kZKnzZpNAt0UhTOWPHUQaHO_MQ',
         q: ''
     },

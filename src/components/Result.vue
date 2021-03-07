@@ -3,74 +3,106 @@
     <section id="result-container">
       <div id="toogle-bar" :class="{ toggleShow: defaultShow }">
         <span> </span>
-        <button @click="toggleVideo" :class="{ active: defaultShow }"> Videos </button>
-        <button @click="toggleEvent" :class="{ active: !defaultShow }"> Events </button>
+        <button
+          type="button"
+          @click="toggleVideo"
+          :class="{ active: defaultShow }"
+        >
+          Videos
+        </button>
+        <button
+          type="button"
+          @click="toggleEvent"
+          :class="{ active: !defaultShow }"
+        >
+          Events
+        </button>
       </div>
-      <div id="videos-card">
-        <h3>Videos</h3>
-        <div id="videos-roll" class="videos-roll">
-          <div
-            v-for="(videos, index) in videos"
-            :key="videos[index]"
-            id="video-result"
-          >
-            <div>
-              <div id="video-thumb">
-                <a
-                  :href="`https://www.youtube.com/watch?v=${videos.id.videoId}`"
-                  target="_blank"
-                  ><img
-                    width="200"
-                    height="100"
-                    :src="videos.snippet.thumbnails.medium.url"
-                /></a>
+      <div id="filter-results">
+        <p>
+          <span v-show="defaultShow">{{ videos.length }}</span>
+          <span v-show="!defaultShow">{{ events.length }}</span>
+          Results
+        </p>
+        <div>
+          <button
+            @click="toggleList"
+            :class="{ active: displayList }"
+            type="button"
+          ></button>
+          <button
+            @click="toggleCard"
+            :class="{ active: !displayList }"
+            type="button"
+          ></button>
+        </div>
+      </div>
+      <div id="result-display">
+        <div v-show="defaultShow" id="videos-card">
+          <div id="videos-roll" class="videos-roll">
+            <div
+              v-for="(videos, index) in videos"
+              :key="videos[index]"
+              id="video-result"
+            >
+              <div>
+                <div id="video-thumb">
+                  <a
+                    :href="`https://www.youtube.com/watch?v=${videos.id.videoId}`"
+                    target="_blank"
+                    ><img
+                      width="200"
+                      height="100"
+                      :src="videos.snippet.thumbnails.medium.url"
+                  /></a>
+                </div>
               </div>
-            </div>
-            <div id="video-result-data">
-              <h4 v-html="videos.snippet.title" id="video-title"></h4>
-              <div id="video-infos">
-                <a
-                  id="video-channel"
-                  :href="`https://www.youtube.com/channel/${videos.snippet.channelId}`"
-                  target="_blank"
-                >
-                  {{ videos.snippet.channelTitle }}
-                </a>
+              <div id="video-result-data">
+                <h4 v-html="videos.snippet.title" id="video-title"></h4>
+                <div id="video-infos">
+                  <a
+                    id="video-channel"
+                    :href="`https://www.youtube.com/channel/${videos.snippet.channelId}`"
+                    target="_blank"
+                  >
+                    {{ videos.snippet.channelTitle }}
+                  </a>
+                </div>
+                <small id="video-description">
+                  {{ videos.snippet.description }}
+                </small>
               </div>
-              <small id="video-description">
-                {{ videos.snippet.description }}
-              </small>
             </div>
           </div>
         </div>
-      </div>
-      <div id="events-card">
-        <h3>Events</h3>
-        <div id="events-roll" class="events-roll">
-          <div
-            v-for="(events, index) in events"
-            :key="events[index]"
-            id="event-result"
-          >
-            <div id="event-result-data">
-              <div>
-                <i>Local</i>
-                <h4 id="event-name">{{ events.name }}</h4>
+        <div v-show="!defaultShow" id="events-card">
+          <h3>Events</h3>
+          <div id="events-roll" class="events-roll">
+            <div
+              v-for="(events, index) in events"
+              :key="events[index]"
+              id="event-result"
+            >
+              <div id="event-result-data">
+                <div>
+                  <i>Local</i>
+                  <h4 id="event-name">{{ events.name }}</h4>
+                </div>
+                <div>
+                  <i>Info</i>
+                  <p>
+                    <a :href="events.url" target="_blank" id="event-link"
+                      >More...</a
+                    >
+                  </p>
+                </div>
               </div>
               <div>
-                <i>Info</i>
-                <p>
-                  <a :href="events.url" target="_blank" id="event-link"
-                    >More...</a
-                  >
-                </p>
-              </div>
-            </div>
-            <div>
-              <div id="event-thumb">
-                <a :href="events.url" target="_blank">
-                  <img width="200" height="100" :src="events.images[0].url" />
-                </a>
+                <div id="event-thumb">
+                  <a :href="events.url" target="_blank">
+                    <img width="200" height="100" :src="events.images[0].url" />
+                  </a>
+                </div>
               </div>
             </div>
           </div>
@@ -91,22 +123,31 @@ export default {
 
   data() {
     return {
-      defaultShow: true
+      defaultShow: true,
+      displayList: true,
     };
   },
   methods: {
     toggleVideo() {
-      if(this.defaultShow == false){
+      if (this.defaultShow == false) {
         this.defaultShow = !this.defaultShow;
       }
-      console.log(this.defaultShow)
     },
     toggleEvent() {
-      if(this.defaultShow == true) {
+      if (this.defaultShow == true) {
         this.defaultShow = !this.defaultShow;
       }
-      console.log(this.defaultShow)
-    }
+    },
+    toggleList() {
+      if (this.displayList == false) {
+        this.displayList = !this.displayList;
+      }
+    },
+    toggleCard() {
+      if (this.displayList == true) {
+        this.displayList = !this.displayList;
+      }
+    },
   },
 };
 </script>
@@ -142,11 +183,10 @@ section {
 
 #videos-card,
 #events-card {
-  background-color: white;
+  background-color: black;
   border-radius: 10px;
   padding: 16px;
-  margin: 10px;
-  width: 50%;
+  width: 100%;
 }
 
 section {
@@ -251,6 +291,7 @@ h3 {
   border-radius: 0 0 30px 30px;
   display: flex;
   position: relative;
+  user-select: none;
 }
 #toogle-bar button {
   width: 50%;
@@ -260,12 +301,14 @@ h3 {
   line-height: 2.5;
   outline: 0;
   text-decoration: none;
+  user-select: none;
   border: none;
-  cursor: pointer;  
-  background-color: white;  
+  color: var(--black);
+  background-color: white;
   border-radius: 0 0 30px 30px;
-  transition: 0.28s ease-in-out;
+  transition: font-weight 0.28s ease-in-out;
 }
+
 #toogle-bar span {
   position: absolute;
   width: 25%;
@@ -277,7 +320,7 @@ h3 {
   transition: left 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.toggleShow  span {
+.toggleShow span {
   left: calc(1 * 100% / 8) !important;
 }
 
@@ -285,6 +328,83 @@ h3 {
   font-weight: 600 !important;
   color: var(--darkBlue);
 }
+
+#filter-results {
+  width: 40%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 20px 0;
+}
+#filter-results span {
+  color: white;
+  background: var(--gradBluePurple);
+  font-size: 1.1rem;
+  font-weight: 700;
+  padding: 5px 10px;
+  border-radius: 10px;
+}
+#filter-results p {
+  color: var(--black);
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0;
+}
+#filter-results button {
+  text-align: center;
+  font-size: 1rem;
+  width: 37px;
+  height: 37px;
+  line-height: 2.5;
+  outline: 0;
+  text-decoration: none;
+  user-select: none;
+  border: none;
+  color: var(--black);
+  background: transparent;
+  position: relative;
+  transition: 0.15s ease-in-out;
+}
+#filter-results button.active {
+  background-color: var(--lightBlue);
+  border-radius: 50%;
+}
+#filter-results button:last-child {
+  margin-left: 25px;
+}
+
+#filter-results button:first-child::before {
+  background: url("../assets/list-icon.svg") no-repeat;
+  background-position: center;
+  content: "";
+  top: 18%;
+  left: 13%;
+  width: 27px;
+  height: 24px;
+  position: absolute;
+}
+#filter-results button:first-child.active::before {
+  background: url("../assets/list-icon-selected.svg") no-repeat !important;
+}
+#filter-results button:last-child::before {
+  background: url("../assets/grid-icon.svg") no-repeat;
+  background-position: center;
+  content: "";
+  top: 18%;
+  left: 18%;
+  width: 24px;
+  height: 24px;
+  position: absolute;
+}
+#filter-results button:last-child.active::before {
+  background: url("../assets/grid-icon-selected.svg") no-repeat !important;
+}
+
+#result-display {
+  width: 45%;
+  margin-bottom: 50px;
+}
+
 /* Resolução a partir de tablets pequenos */
 /*  */
 @media (min-width: 992px) {
@@ -302,10 +422,6 @@ h3 {
     border-top: 1px solid var(--black);
     padding: 18px 0;
   }
-  #events-roll > div:first-child,
-  #videos-roll > div:first-child {
-    border-top: 0px;
-  }
   #event-result-data div {
     margin-bottom: 5px;
   }
@@ -320,7 +436,8 @@ h3 {
   #result-container {
     width: 90%;
   }
-  #toogle-bar {
+  #toogle-bar,
+  #filter-results {
     width: 60%;
   }
 }
@@ -396,7 +513,8 @@ h3 {
     -webkit-line-clamp: 2;
   }
 
-  #toogle-bar {
+  #toogle-bar,
+  #filter-results {
     width: 70%;
   }
 }
@@ -417,7 +535,8 @@ h3 {
   #result-container {
     width: 90%;
   }
-  #toogle-bar {
+  #toogle-bar,
+  #filter-results {
     width: 90%;
   }
 }

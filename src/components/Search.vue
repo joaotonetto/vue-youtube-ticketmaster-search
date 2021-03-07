@@ -40,6 +40,7 @@ template {
 
 div {
   width: 100%;
+  user-select: none;
 }
 input {
   height: calc(1.5em + 0.75rem + 6px);

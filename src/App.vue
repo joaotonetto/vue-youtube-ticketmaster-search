@@ -87,6 +87,7 @@ export default {
   --blueHover:  #60C5FF;
   --darkBlue: #234D97;
   --darkBlueHover: #295AB0;
+  --lightBlue: #DDE8FC;
   --black: #1a1a1c;
   --grey: #4e4e50;
 

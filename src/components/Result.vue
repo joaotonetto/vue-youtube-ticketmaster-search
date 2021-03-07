@@ -1,69 +1,87 @@
 <template>
-  <div id="result-container">
-    <section >
+  <div id="container">
+    <section id="result-container">
+      <div id="toogle-bar" :class="{ toggleShow: defaultShow }">
+        <span> </span>
+        <button @click="toggleVideo" :class="{ active: defaultShow }"> Videos </button>
+        <button @click="toggleEvent" :class="{ active: !defaultShow }"> Events </button>
+      </div>
       <div id="videos-card">
         <h3>Videos</h3>
-          <div id="videos-roll" class="videos-roll">
-            <div
-              v-for="(videos, index) in videos"
-              :key="videos[index]"
-              id="video-result"
-            >
-              <div>
-                <div id="video-thumb">
-                 <a :href="`https://www.youtube.com/watch?v=${videos.id.videoId}`" target="_blank"><img width="200" height="100" :src="videos.snippet.thumbnails.medium.url"></a> 
-                </div>
+        <div id="videos-roll" class="videos-roll">
+          <div
+            v-for="(videos, index) in videos"
+            :key="videos[index]"
+            id="video-result"
+          >
+            <div>
+              <div id="video-thumb">
+                <a
+                  :href="`https://www.youtube.com/watch?v=${videos.id.videoId}`"
+                  target="_blank"
+                  ><img
+                    width="200"
+                    height="100"
+                    :src="videos.snippet.thumbnails.medium.url"
+                /></a>
               </div>
-              <div id="video-result-data">
-                <h4 v-html="videos.snippet.title" id="video-title"></h4>
-                <div id="video-infos">
-                  <a id="video-channel" :href="`https://www.youtube.com/channel/${videos.snippet.channelId}`" target="_blank">
-                    {{videos.snippet.channelTitle}}
-                  </a>
-                </div>
-                <small id="video-description">
-                  {{ videos.snippet.description }}
-                </small>
+            </div>
+            <div id="video-result-data">
+              <h4 v-html="videos.snippet.title" id="video-title"></h4>
+              <div id="video-infos">
+                <a
+                  id="video-channel"
+                  :href="`https://www.youtube.com/channel/${videos.snippet.channelId}`"
+                  target="_blank"
+                >
+                  {{ videos.snippet.channelTitle }}
+                </a>
+              </div>
+              <small id="video-description">
+                {{ videos.snippet.description }}
+              </small>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="events-card">
+        <h3>Events</h3>
+        <div id="events-roll" class="events-roll">
+          <div
+            v-for="(events, index) in events"
+            :key="events[index]"
+            id="event-result"
+          >
+            <div id="event-result-data">
+              <div>
+                <i>Local</i>
+                <h4 id="event-name">{{ events.name }}</h4>
+              </div>
+              <div>
+                <i>Info</i>
+                <p>
+                  <a :href="events.url" target="_blank" id="event-link"
+                    >More...</a
+                  >
+                </p>
+              </div>
+            </div>
+            <div>
+              <div id="event-thumb">
+                <a :href="events.url" target="_blank">
+                  <img width="200" height="100" :src="events.images[0].url" />
+                </a>
               </div>
             </div>
           </div>
-      </div>
-      <div id="events-card">
-        <h3>Events</h3>          
-          <div id="events-roll" class="events-roll">
-            <div
-              v-for="(events, index) in events"
-              :key="events[index]"
-              id="event-result"
-            >
-              <div id="event-result-data">
-                <div>
-                  <i>Local</i>
-                  <h4 id="event-name">{{ events.name }}</h4>
-                </div>
-                <div>
-                  <i>Info</i>
-                  <p>                    
-                    <a :href="events.url" target="_blank" id="event-link">More...</a>
-                  </p>
-                </div>                
-              </div>
-              <div>
-                <div id="event-thumb">
-                  <a :href="events.url" target="_blank" >
-                    <img width="200" height="100" :src="events.images[0].url">
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>        
+        </div>
       </div>
     </section>
+    <div id="bg"></div>
   </div>
 </template>
 
 <script>
-
 export default {
   name: "Result",
   props: {
@@ -72,18 +90,54 @@ export default {
   },
 
   data() {
-    return {};
+    return {
+      defaultShow: true
+    };
   },
-  methods: {},
+  methods: {
+    toggleVideo() {
+      if(this.defaultShow == false){
+        this.defaultShow = !this.defaultShow;
+      }
+      console.log(this.defaultShow)
+    },
+    toggleEvent() {
+      if(this.defaultShow == true) {
+        this.defaultShow = !this.defaultShow;
+      }
+      console.log(this.defaultShow)
+    }
+  },
 };
 </script>
 
 <style scoped>
-
 /* css destinado a todas a resoluções, scooped */
 /*  */
-#result-container {
-  margin-top: 20px;
+#container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  background-color: var(--resultbackground);
+  position: relative;
+}
+#bg {
+  background: url("../assets/pattern.png") repeat;
+  background-size: 40%;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 0;
+  position: absolute;
+  opacity: 0.1;
+}
+
+section {
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 }
 
 #videos-card,
@@ -134,7 +188,8 @@ h3 {
   -webkit-line-clamp: 3;
 }
 
-#event-link, #video-channel {
+#event-link,
+#video-channel {
   font-size: 16px;
   font-weight: 600;
   color: var(--red);
@@ -167,7 +222,6 @@ h3 {
   margin: 0;
 }
 
-
 /* Estilização da scroolbar */
 /*  */
 #videos-card::-webkit-scrollbar,
@@ -190,7 +244,47 @@ h3 {
   background: rgba(78, 78, 80, 0.5);
 }
 
+#toogle-bar {
+  width: 40%;
+  background-color: white;
+  box-shadow: var(--blueLowShadow);
+  border-radius: 0 0 30px 30px;
+  display: flex;
+  position: relative;
+}
+#toogle-bar button {
+  width: 50%;
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 2.5;
+  outline: 0;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;  
+  background-color: white;  
+  border-radius: 0 0 30px 30px;
+  transition: 0.28s ease-in-out;
+}
+#toogle-bar span {
+  position: absolute;
+  width: 25%;
+  height: 5px;
+  left: calc(5 * 100% / 8);
+  background: var(--gradDarkPurpleBlue);
+  transform-origin: center;
+  border-radius: 0 0 30px 30px;
+  transition: left 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
 
+.toggleShow  span {
+  left: calc(1 * 100% / 8) !important;
+}
+
+.active {
+  font-weight: 600 !important;
+  color: var(--darkBlue);
+}
 /* Resolução a partir de tablets pequenos */
 /*  */
 @media (min-width: 992px) {
@@ -217,7 +311,7 @@ h3 {
   }
   #event-result-data div:last-child {
     margin-bottom: 0px;
-  }  
+  }
 }
 
 /* Resolução entre Mobile e tablets pequenos */
@@ -225,6 +319,9 @@ h3 {
 @media (min-width: 768px) and (max-width: 992px) {
   #result-container {
     width: 90%;
+  }
+  #toogle-bar {
+    width: 60%;
   }
 }
 
@@ -298,6 +395,10 @@ h3 {
     line-clamp: 2;
     -webkit-line-clamp: 2;
   }
+
+  #toogle-bar {
+    width: 70%;
+  }
 }
 
 /* Resolução para ssMobile e Mobile */
@@ -312,9 +413,11 @@ h3 {
 /* Resolução para ssMobile*/
 /*  */
 
-
 @media (max-width: 576px) {
   #result-container {
+    width: 90%;
+  }
+  #toogle-bar {
     width: 90%;
   }
 }

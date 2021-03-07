@@ -60,4 +60,15 @@ export default {
     width: 20vw;
   }
 }
+@media (max-width: 768px ) {
+  .logo {
+    width: 30vw;
+  }
+}
+@media (max-width: 360px ) {
+  .logo {
+    margin: 0px;    
+    min-width: 100px;
+  }
+}
 </style>

@@ -76,6 +76,7 @@ export default {
 }
 #app {
   --background: #fff;
+  --resultbackground: #F8F9FC;
 
   /* colors */
   --darkPurple: #551ED7;
@@ -90,12 +91,14 @@ export default {
   --grey: #4e4e50;
 
   /* box shadows */
-  --blueShadow: 0 5px 20px #234D9750;
+  --blueShadow: 0 5px 20px #234D9750;  
+  --blueLowShadow: 0 3px 20px #234D9735;
   --hoverBlueShadow: 0 6px 20px #234D9775;
 
   /* gradients */
   --gradBluePurple: linear-gradient(45deg, var(--blue), var(--purple));
   --hoverGradBluePurple: linear-gradient(45deg, var(--blueHover), var(--purpleHover));
+  --gradDarkPurpleBlue: linear-gradient(45deg, var(--darkPurple), var(--blue));
 
   
   --darkred: #950741;
@@ -104,6 +107,10 @@ export default {
 
 html {
   background-color: var(--background);
+}
+
+body {
+  margin: 8px 0 0 0;
 }
 
 .row {
@@ -150,7 +157,7 @@ html {
 
 @media (max-width: 768px ) {
   #header {
-    background-size: auto 90%;
+    background-size: auto 100%;
     height: 50vw;
   }
 }

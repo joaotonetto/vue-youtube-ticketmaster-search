@@ -101,11 +101,13 @@ button:active {
 }
 @media (max-width: 319px) {
   button {
-    border-radius: 1rem;
-    margin-top: 0.5em;
+    margin-top: 0px;
   }
-  input {
-    border-radius: 1rem;
+}
+
+@media (max-width: 576px) {
+  button, input {
+    height: calc(1.5em + 0.75rem + 2px);
   }
 }
 </style>

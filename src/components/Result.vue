@@ -286,7 +286,7 @@ h3 {
 }
 
 #video-result-data h4 {
-  color: var(--black);
+  color: black;
   margin: 0;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -305,7 +305,7 @@ h3 {
 }
 #video-result-data p {
   margin: 0px !important;
-  color: var(--black);
+  color: black;
   font-size: 12px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -317,7 +317,7 @@ h3 {
 }
 
 #event-result-data h4 {
-  color: var(--black);
+  color: black;
   font-size: 1.25rem;
   margin: 0;
   overflow: hidden;
@@ -399,7 +399,7 @@ h3 {
   cursor: pointer;
   user-select: none;
   border: none;
-  color: var(--black);
+  color: black;
   background-color: white;
   border-radius: 0 0 30px 30px;
   transition: font-weight 0.28s ease-in-out;
@@ -422,7 +422,7 @@ h3 {
 
 .active {
   font-weight: 600 !important;
-  color: var(--darkBlue);
+  color: var(--darkBlue) !important;
 }
 
 #filter-results {

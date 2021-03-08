@@ -1,5 +1,8 @@
 <template>
-  <div id="app">
+  <div :class="{ darkTheme: darkMode }" id="app">    
+    <button class="dark-btn" @click="turnDark">
+      {{themeStat}} side
+    </button>
     <div :class="{ noResults: !showResults }" id="header">
       <Logo />
       <Search @onSearchRequested="search" />
@@ -26,6 +29,8 @@ export default {
       videos: [],
       events: [],
       showResults: false,
+      darkMode: false,
+      themeStat: "dark",
     };
   },
 
@@ -34,6 +39,13 @@ export default {
   },
 
   methods: {
+    turnDark() {
+      this.darkMode = !this.darkMode;
+      if(this.darkMode == true)
+        this.themeStat = "ligth";           
+      else        
+        this.themeStat = "dark";    
+    },
     search(queryString) {
       //verificação para evitar consulta vazia
       //
@@ -65,7 +77,7 @@ export default {
 };
 </script>
 
-<style>
+<style type="scss">
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -75,6 +87,9 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
+  transition: 0.6s ease;
+  background: var(--background);
 }
 #app {
   --background: #fff;
@@ -108,13 +123,62 @@ export default {
   --red: #e1054e;
 }
 
-html {
-  background-color: var(--background);
+#app.darkTheme {
+  --background: #070F1E;
+  --resultbackground: #212F4A;
+
+  /* colors */
+  --darkPurple: #D71E1E;
+  --darkPurpleHover: #F02121;
+  --purple: #EC5555;
+  --purpleHover: #FF5C5C;
+  --blue: #F0A55A;
+  --blueHover:  #FFAF60;
+  --darkBlue: #974323;
+  --darkBlueHover: #BD532C;
+  --lightBlue: #F0A55A;
+  --black: #fff;
+  --grey: #4e4e50;
+
+  /* box shadows */
+  --blueShadow: 0 5px 20px #97432350;  
+  --blueLowShadow: 0 3px 20px #97432335;
+  --hoverBlueShadow: 0 6px 20px #97432375;
+
+  /* gradients */
+  --gradBluePurple: linear-gradient(45deg, var(--blue), var(--purple));
+  --hoverGradBluePurple: linear-gradient(45deg, var(--blueHover), var(--purpleHover));
+  --gradDarkPurpleBlue: linear-gradient(45deg, var(--darkPurple), var(--blue));
+
+  
+  --darkred: #950741;
+  --red: #e1054e;
+
+  margin-top: -8px;  
+}
+.dark-btn {
+  color: white;
+  font-size: 1rem;
+  font-weight: 500;
+  outline: 0;
+  padding: 5px 20px;
+  text-decoration: none;
+  cursor: pointer;
+  user-select: none;
+  border: none;
+  background: var(--gradDarkPurpleBlue);
+  border-radius: 30px;
+  transition: font-weight 0.28s ease-in-out;
+  position: fixed;
+  right: 25px;
+  top: 25px;
+  z-index: 10;
 }
 
 body {
   margin: 8px 0 0 0;
 }
+
 
 .noResults {
   margin-top: 10vh;

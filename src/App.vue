@@ -52,9 +52,7 @@ export default {
       if (queryString.length == 0) {
         this.events = [];
         this.videos = [];
-      } else {   
-        
-        this.showResults = true;
+      } else {    
         console.log(this.showResults);
         YOUTUBE.get("/search", {
           params: {
@@ -71,7 +69,8 @@ export default {
         }).then((response) => {
           this.events = response.data._embedded.attractions;
         });
-      }
+        this.showResults = true;
+      }      
     },
   },
 };

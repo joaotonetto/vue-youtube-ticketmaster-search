@@ -39,6 +39,9 @@
       </div>
       <div id="result-display">
         <div v-show="defaultShow" id="videos-card">
+          <div class="failResult" v-if="videos.length == 0">
+            We couldn't find videos for you, sorry :(
+          </div>
           <div id="videos-roll">
             <div
               id="video-result"
@@ -70,34 +73,25 @@
           </div>
         </div>
         <div v-show="!defaultShow" id="events-card">
-          <h3>Events</h3>
-          <div id="events-roll" class="events-roll">
+          <div class="failResult" v-if="events.length == 0">
+            We couldn't find events for you, sorry :(
+          </div>
+          <div v-else id="events-roll" class="events-roll">
             <div
               id="event-result"
               :class="{ list: displayList }"
               v-for="(events, index) in events"
               :key="events[index]"
             >
-              <div id="event-result-data">
-                <div>
-                  <i>Local</i>
-                  <h4 id="event-name">{{ events.name }}</h4>
-                </div>
-                <div>
-                  <i>Info</i>
-                  <p>
-                    <a :href="events.url" target="_blank" id="event-link"
-                      >More...</a
-                    >
-                  </p>
-                </div>
+              <div id="event-thumb">
+                <a :href="events.url" target="_blank">
+                  <img :src="events.images[0].url" />
+                </a>
               </div>
-              <div>
-                <div id="event-thumb">
-                  <a :href="events.url" target="_blank">
-                    <img width="200" height="100" :src="events.images[0].url" />
-                  </a>
-                </div>
+              <div id="event-result-data">
+                <span>Local</span>
+                <h4>{{ events.name }}</h4>
+                <a :href="events.url" target="_blank"> Join Now </a>
               </div>
             </div>
           </div>
@@ -156,6 +150,7 @@ export default {
   justify-content: center;
   background-color: var(--resultbackground);
   position: relative;
+  transition: 0.6s;
 }
 #bg {
   background: url("../assets/pattern.png") repeat;
@@ -167,6 +162,13 @@ export default {
   z-index: 0;
   position: absolute;
   opacity: 0.1;
+}
+
+.failResult {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--blue);
+  padding: 100px;
 }
 
 section {
@@ -225,24 +227,37 @@ h3 {
   user-select: none;
   margin-bottom: 2%;
   border-radius: 20px;
-  transition: 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+#event-result {
+  justify-content: space-between;
 }
 
 #video-thumb,
 #event-thumb {
   position: relative;
 }
+
 #video-thumb a,
 #event-thumb a {
   cursor: pointer;
   z-index: 0;
 }
-#video-thumb img,
-#event-thumb img {
+#video-thumb img {
   border-radius: 10px;
   width: 100%;
   height: auto;
+  object-fit: cover;
 }
+#event-thumb img {
+  border-radius: 10px;
+  width: 100%;
+  height: 100%;
+  min-height: 100px;
+  max-height: 200px;
+  object-fit: cover;
+}
+
 #video-thumb span {
   position: absolute;
   background: var(--gradBluePurple);
@@ -256,12 +271,20 @@ h3 {
   z-index: 1;
 }
 
-#video-result-data,
-#event-result-data {
+#video-result-data {
   text-align: left;
   margin-top: 6px;
   padding: 6px;
 }
+#event-result-data {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  margin-top: 13px;
+  padding: 0 10px;
+}
+
 #video-result-data h4 {
   color: var(--black);
   margin: 0;
@@ -293,6 +316,38 @@ h3 {
   -webkit-line-clamp: 5;
 }
 
+#event-result-data h4 {
+  color: var(--black);
+  font-size: 1.25rem;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  box-orient: vertical;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  line-clamp: 2;
+  -webkit-line-clamp: 2;
+}
+#event-result-data span {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--darkBlue);
+  text-decoration: none;
+  margin: 3px 0;
+}
+#event-result-data a {
+  color: white;
+  font-size: 18px;
+  font-weight: 700;
+  padding: 10px 30px;
+  text-decoration: none;
+  user-select: none;
+  background: var(--gradBluePurple);
+  border-radius: 30px;
+  margin-top: 20px;
+  max-width: 170px;
+}
+
 /* list */
 #video-result.list,
 #event-result.list {
@@ -304,47 +359,24 @@ h3 {
   padding: 10px;
   user-select: none;
 }
-.list #video-result-data,
-.list #event-result-data {
+.list #video-result-data {
   margin-left: 6px;
 }
-.list #video-thumb img ,
-.list #event-thumb img {
+
+.list #event-result-data {
+  width: 50%;
+  align-self: center;
+}
+
+.list #video-thumb img {
   height: 100%;
   min-width: 150px;
 }
-
-
-#video-infos {
-  margin: 10px 0;
+.list #event-thumb {
+  width: 50%;
 }
-
-#event-result {
-  display: flex;
-  justify-content: space-between;
-  align-content: space-between;
-}
-
-/* Estilização da scroolbar */
-/*  */
-#videos-card::-webkit-scrollbar,
-#events-card::-webkit-scrollbar {
-  width: 10px;
-  height: 12px;
-}
-
-#videos-card::-webkit-scrollbar-track,
-#events-card::-webkit-scrollbar-track {
-  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-  border-radius: 10px;
-  background: rgba(78, 78, 80, 0.2);
-}
-
-#videos-card::-webkit-scrollbar-thumb,
-#events-card::-webkit-scrollbar-thumb {
-  border-radius: 10px;
-  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
-  background: rgba(78, 78, 80, 0.5);
+.list #event-thumb img {
+  min-width: 150px;
 }
 
 #toogle-bar {
@@ -516,34 +548,6 @@ h3 {
     position: relative;
   }
 
-  #video-description {
-    line-clamp: 2;
-    -webkit-line-clamp: 2;
-  }
-
-  #video-infos {
-    margin: 5px 0;
-  }
-  #videos-card::-webkit-scrollbar,
-  #events-card::-webkit-scrollbar {
-    width: 10px;
-    height: 12px;
-  }
-
-  #videos-card::-webkit-scrollbar-track,
-  #events-card::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-    border-radius: 10px;
-    background: rgba(78, 78, 80, 0.2);
-  }
-
-  #videos-card::-webkit-scrollbar-thumb,
-  #events-card::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
-    background: rgba(78, 78, 80, 0.5);
-  }
-
   #toogle-bar,
   #filter-results {
     width: 70%;
@@ -555,7 +559,7 @@ h3 {
 
 @media (max-width: 768px) {
   #result-display {
-    width: 85%;
+    width: 90%;
   }
 }
 
@@ -572,13 +576,21 @@ h3 {
   #result-container {
     width: 90%;
   }
+  #result-display {
+    width: 100%;
+  }
   #toogle-bar,
   #filter-results {
     width: 90%;
   }
-  #video-result,
-  #event-reuslt {
+  #video-result {
     width: 100%;
+  }
+  #event-result {
+    width: 100%;
+  }
+  .list #event-thumb img {
+    min-width: 100px;
   }
 }
 </style>

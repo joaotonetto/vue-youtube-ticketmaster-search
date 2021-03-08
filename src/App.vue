@@ -1,10 +1,10 @@
 <template>
   <div id="app">
-    <div id="header">
+    <div :class="{ noResults: !showResults }" id="header">
       <Logo />
       <Search @onSearchRequested="search" />
     </div>    
-    <Result :videos="videos" :events="events" />
+    <Result v-if="showResults" :videos="videos" :events="events" />
   </div>
 </template>
 
@@ -25,6 +25,7 @@ export default {
     return {
       videos: [],
       events: [],
+      showResults: false,
     };
   },
 
@@ -39,13 +40,15 @@ export default {
       if (queryString.length == 0) {
         this.events = [];
         this.videos = [];
-      } else {
+      } else {   
+        
+        this.showResults = true;
+        console.log(this.showResults);
         YOUTUBE.get("/search", {
           params: {
             q: queryString,
           },
         }).then((response) => {
-          console.log("YOUTUBE", response);
           this.videos = response.data.items;
         });
 
@@ -54,7 +57,6 @@ export default {
             keyword: queryString,
           },
         }).then((response) => {
-          console.log("TICKETMASTER", response);
           this.events = response.data._embedded.attractions;
         });
       }
@@ -114,6 +116,10 @@ body {
   margin: 8px 0 0 0;
 }
 
+.noResults {
+  margin-top: 10vh;
+}
+
 .row {
   display: flex;
   flex-wrap: wrap;
@@ -137,7 +143,9 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  transition: 0.6s ease;
 }
+
 
 #header {
   background: url("./assets/band-background.png") no-repeat;

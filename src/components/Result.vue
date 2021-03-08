@@ -39,38 +39,32 @@
       </div>
       <div id="result-display">
         <div v-show="defaultShow" id="videos-card">
-          <div id="videos-roll" class="videos-roll">
+          <div id="videos-roll">
             <div
+              id="video-result"
+              :class="{ list: displayList }"
               v-for="(videos, index) in videos"
               :key="videos[index]"
-              id="video-result"
             >
-              <div>
-                <div id="video-thumb">
-                  <a
-                    :href="`https://www.youtube.com/watch?v=${videos.id.videoId}`"
-                    target="_blank"
-                    ><img
-                      width="200"
-                      height="100"
-                      :src="videos.snippet.thumbnails.medium.url"
-                  /></a>
-                </div>
+              <div id="video-thumb">
+                <a
+                  :href="`https://www.youtube.com/watch?v=${videos.id.videoId}`"
+                  target="_blank"
+                  ><img :src="videos.snippet.thumbnails.medium.url"
+                /></a>
+                <span>Watch</span>
               </div>
               <div id="video-result-data">
-                <h4 v-html="videos.snippet.title" id="video-title"></h4>
-                <div id="video-infos">
-                  <a
-                    id="video-channel"
-                    :href="`https://www.youtube.com/channel/${videos.snippet.channelId}`"
-                    target="_blank"
-                  >
-                    {{ videos.snippet.channelTitle }}
-                  </a>
-                </div>
-                <small id="video-description">
+                <h4 v-html="videos.snippet.title"></h4>
+                <a
+                  :href="`https://www.youtube.com/channel/${videos.snippet.channelId}`"
+                  target="_blank"
+                >
+                  {{ videos.snippet.channelTitle }}
+                </a>
+                <p>
                   {{ videos.snippet.description }}
-                </small>
+                </p>
               </div>
             </div>
           </div>
@@ -79,9 +73,10 @@
           <h3>Events</h3>
           <div id="events-roll" class="events-roll">
             <div
+              id="event-result"
+              :class="{ list: displayList }"
               v-for="(events, index) in events"
               :key="events[index]"
-              id="event-result"
             >
               <div id="event-result-data">
                 <div>
@@ -181,14 +176,6 @@ section {
   flex-direction: column;
 }
 
-#videos-card,
-#events-card {
-  background-color: black;
-  border-radius: 10px;
-  padding: 16px;
-  width: 100%;
-}
-
 section {
   display: flex;
 }
@@ -203,63 +190,139 @@ h3 {
   margin: 0 5px;
 }
 
-#video-result {
+#result-container {
+  width: 100%;
+}
+
+/* listagem de resultados */
+/* 
+ */
+#result-display {
+  width: 55%;
+  margin-bottom: 50px;
+}
+
+#videos-card,
+#events-card {
+  width: 100%;
+}
+
+/* grid */
+#videos-roll,
+#events-roll {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
 }
-#video-thumb {
-  margin-right: 10px;
+#video-result,
+#event-result {
+  display: flex;
+  flex-direction: column;
+  width: 45%;
+  background-color: white;
+  box-shadow: var(--blueLowShadow);
+  padding: 10px;
+  user-select: none;
+  margin-bottom: 2%;
+  border-radius: 20px;
+  transition: 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
-#video-result-data {
+
+#video-thumb,
+#event-thumb {
+  position: relative;
+}
+#video-thumb a,
+#event-thumb a {
+  cursor: pointer;
+  z-index: 0;
+}
+#video-thumb img,
+#event-thumb img {
+  border-radius: 10px;
+  width: 100%;
+  height: auto;
+}
+#video-thumb span {
+  position: absolute;
+  background: var(--gradBluePurple);
+  color: white;
+  font-size: 0.8rem;
+  bottom: 0;
+  right: 0;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 10px;
+  z-index: 1;
+}
+
+#video-result-data,
+#event-result-data {
   text-align: left;
+  margin-top: 6px;
+  padding: 6px;
 }
-#video-title {
+#video-result-data h4 {
+  color: var(--black);
   margin: 0;
-}
-#video-infos {
-  margin: 10px 0;
-}
-#video-description {
   overflow: hidden;
   text-overflow: ellipsis;
   box-orient: vertical;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  line-clamp: 3;
-  -webkit-line-clamp: 3;
+  line-clamp: 2;
+  -webkit-line-clamp: 2;
+}
+#video-result-data a {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--darkBlue);
+  text-decoration: none;
+  margin: 3px 0;
+}
+#video-result-data p {
+  margin: 0px !important;
+  color: var(--black);
+  font-size: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  box-orient: vertical;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  line-clamp: 5;
+  -webkit-line-clamp: 5;
 }
 
-#event-link,
-#video-channel {
-  font-size: 16px;
-  font-weight: 600;
-  color: var(--red);
-  text-decoration: none;
+/* list */
+#video-result.list,
+#event-result.list {
+  display: flex;
+  flex-flow: nowrap;
+  width: 100%;
+  background-color: white;
+  box-shadow: var(--blueLowShadow);
+  padding: 10px;
+  user-select: none;
+}
+.list #video-result-data,
+.list #event-result-data {
+  margin-left: 6px;
+}
+.list #video-thumb img ,
+.list #event-thumb img {
+  height: 100%;
+  min-width: 150px;
+}
+
+
+#video-infos {
+  margin: 10px 0;
 }
 
 #event-result {
   display: flex;
   justify-content: space-between;
   align-content: space-between;
-}
-#event-thumb {
-  margin-left: 10px;
-}
-#event-result-data {
-  text-align: left;
-}
-#event-result-data i {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--darkred);
-}
-#event-result-data h4 {
-  color: var(--black);
-}
-
-#event-name,
-#event-link,
-#event-result-data p {
-  margin: 0;
 }
 
 /* Estilização da scroolbar */
@@ -301,6 +364,7 @@ h3 {
   line-height: 2.5;
   outline: 0;
   text-decoration: none;
+  cursor: pointer;
   user-select: none;
   border: none;
   color: var(--black);
@@ -333,6 +397,7 @@ h3 {
   width: 40%;
   display: flex;
   align-items: center;
+  user-select: none;
   justify-content: space-between;
   margin: 20px 0;
 }
@@ -359,6 +424,7 @@ h3 {
   outline: 0;
   text-decoration: none;
   user-select: none;
+  cursor: pointer;
   border: none;
   color: var(--black);
   background: transparent;
@@ -400,33 +466,18 @@ h3 {
   background: url("../assets/grid-icon-selected.svg") no-repeat !important;
 }
 
-#result-display {
-  width: 45%;
-  margin-bottom: 50px;
-}
-
 /* Resolução a partir de tablets pequenos */
 /*  */
-@media (min-width: 992px) {
+@media (min-width: 1400px) {
   #result-container {
     width: 80%;
   }
-  #videos-card,
-  #events-card {
-    height: 50vh;
-    overflow-y: auto;
-  }
+}
 
-  #events-roll > div,
-  #videos-roll > div {
-    border-top: 1px solid var(--black);
-    padding: 18px 0;
-  }
-  #event-result-data div {
-    margin-bottom: 5px;
-  }
-  #event-result-data div:last-child {
-    margin-bottom: 0px;
+@media (min-width: 992px) {
+  #video-result,
+  #event-result {
+    width: 46%;
   }
 }
 
@@ -449,37 +500,27 @@ h3 {
     flex-direction: column;
     align-items: center;
   }
+
+  #result-display {
+    width: 70%;
+  }
+
   #videos-card,
   #events-card {
     width: 100%;
   }
+
   #videos-roll,
   #events-roll {
     display: flex;
-    overflow-y: auto;
+    position: relative;
   }
-  #event-result {
-    display: grid;
-    border-right: 1px solid var(--black);
-    margin: 0px;
-    padding: 0 10px;
-  }
-  #video-result {
-    display: block;
-    border-right: 1px solid var(--black);
-    margin: 0px;
-    padding: 0 10px;
-  }
+
   #video-description {
     line-clamp: 2;
     -webkit-line-clamp: 2;
   }
-  #event-thumb {
-    margin: 10px 0 0 0;
-  }
-  #video-thumb {
-    margin: 0 0 10px 0;
-  }
+
   #video-infos {
     margin: 5px 0;
   }
@@ -503,16 +544,6 @@ h3 {
     background: rgba(78, 78, 80, 0.5);
   }
 
-  #video-title {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    box-orient: vertical;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    line-clamp: 2;
-    -webkit-line-clamp: 2;
-  }
-
   #toogle-bar,
   #filter-results {
     width: 70%;
@@ -521,6 +552,12 @@ h3 {
 
 /* Resolução para ssMobile e Mobile */
 /*  */
+
+@media (max-width: 768px) {
+  #result-display {
+    width: 85%;
+  }
+}
 
 @media (min-width: 576px) and (max-width: 768px) {
   #result-container {
@@ -538,6 +575,10 @@ h3 {
   #toogle-bar,
   #filter-results {
     width: 90%;
+  }
+  #video-result,
+  #event-reuslt {
+    width: 100%;
   }
 }
 </style>
